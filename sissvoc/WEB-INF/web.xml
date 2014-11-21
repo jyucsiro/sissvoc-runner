@@ -2,77 +2,82 @@
 <!DOCTYPE web-app PUBLIC 
 	'-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN'
 	'http://java.sun.com/dtd/web-app_2_3.dtd'>
-<web-app>        
+<web-app> 
 
+	<!--
 	<filter>
     	<filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
    
-        <!--
         <init-param>
             <param-name>logLevel</param-name>
             <param-value>DEBUG</param-value>
         </init-param>
-        -->
+        
     </filter>
     
     <filter-mapping>
         <filter-name>UrlRewriteFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-  <servlet>
-    <servlet-name>elda</servlet-name>
-    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-       
-    <init-param>
-    	<param-name>com.sun.jersey.config.property.packages</param-name>
-    	<param-value>com.epimorphics.lda.restlets</param-value>
-    </init-param>
-    
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+    -->
   
   <!-- ==================================================================== -->
-
-  <servlet>
-  	<servlet-name>loader-init</servlet-name>
-  	<servlet-class>com.epimorphics.lda.routing.Loader</servlet-class>
-  	
-  	<init-param>
-		<param-name>com.epimorphics.api.initialSpecFile</param-name><param-value>./resources/wq/config/WQ-ELDAConfig.ttl,./resources/slake/config/Slake-ELDAConfig.ttl,./resources/siss-default/config/SISSvoc3-template-ELDAConfig.ttl,./resources/ogc/config/OGC-def-ELDAConfig.ttl,./resources/nvcl/config/nvcl-scalars-ELDAConfig.ttl,./resources/nerc/config/NERC-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2012-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2010-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2009-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2008-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2006-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2005-ELDAConfig.ttl,./resources/ics/config/InternationalStratigraphicChart2004-ELDAConfig.ttl,./resources/erml/config/commodity-vocab-ELDAConfig.ttl,./resources/eea-europa/config/eea-europa-ELDAConfig.ttl,./resources/cgi/config/CGI-TEST-ELDAConfig.ttl,./resources/cgi/config/CGI-201211-ELDAConfig.ttl</param-value>
-  	</init-param>
     
-    <init-param>
-    	<param-name>com.epimorphics.api.authKey.example</param-name>
-    	<param-value>auth/example.auth</param-value>
-    </init-param>
-    
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+    <context-param>
+       <param-name>com.epimorphics.api.initialSpecFile</param-name>
+        <param-value>resources/default/config/*.ttl</param-value>
+    </context-param>
   
   <!-- ==================================================================== -->
   
-  <!--
-  <listener>
-    <listener-class>com.epimorphics.lda.jmx.Statistics</listener-class>
-    <listener-class>com.epimorphics.lda.jmx.CacheControl</listener-class>
-  </listener>
+    <filter>
+        <filter-name>Jersey Web Application</filter-name>
+        <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
+    
+        <init-param>
+          <param-name>com.sun.jersey.config.property.packages</param-name>
+          <param-value>com.epimorphics.lda.restlets</param-value>
+        </init-param>
+        
+        <init-param>
+          <param-name>com.sun.jersey.config.feature.FilterForwardOn404</param-name>
+          <param-value>true</param-value>
+        </init-param>
+        
+        <init-param>
+             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+             <param-value>com.sun.jersey.api.container.filter.PostReplaceFilter</param-value>
+         </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>Jersey Web Application</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+  
+  <!-- ==================================================================== -->
+
+  <!-- 
+  <servlet>
+	<servlet-name>force-log4j</servlet-name>
+	<servlet-class>com.epimorphics.lda.restlets.ForceLog4JAndAnnounceElda</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
   -->
-  
+
   <!-- ==================================================================== -->
   
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
+  <listener>
+    <listener-class>com.epimorphics.lda.restlets.RouterRestlet$Init</listener-class>
+  </listener>
   
   <!-- ==================================================================== -->
 
   <servlet-mapping>
-     <servlet-name>elda</servlet-name>
-     <url-pattern>/API/*</url-pattern> 
-  </servlet-mapping>  
+	<servlet-name>default</servlet-name>
+	<url-pattern>/*</url-pattern>
+  </servlet-mapping>
   
   <!-- ==================================================================== -->
 
