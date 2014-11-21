@@ -15,7 +15,7 @@ Unzip package to a local directory.
 
 Run `sissvoc-run.bat`.
 
-In a web browser, enter `http://localhost:8080/elda-demo/meta/api` to view available endpoints.
+In a web browser, enter `http://localhost:8080/sissvoc/meta/api` to view available endpoints.
 
 II. Configuration
 
